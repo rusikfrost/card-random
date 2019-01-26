@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+<link rel="stylesheet" href="/style/style.css" type="text/css">
+</head>
+<body>
+<div class="jumbotron text-center">
+  <h1>Black Kard</h1>
+  <p>Random money wowowo</p> 
+</div>
+
+
+<div class="container">
+  <div class="row" v-bind:style="{ display: rowDisplay }">
+ <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+ 	<b class="balance">23 $</b>  Withdraw money</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+			<form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">    
+				<input type="hidden" name="receiver" value="410014146569625">   
+				<input type="hidden" name="formcomment" value="Pay for test">
+				<input type="hidden" name="short-dest" value="Pay for test">  
+				<input type="hidden" name="label" value="$order_id">    
+				<input type="hidden" name="quickpay-form" value="donate">    
+				<input type="hidden" name="targets" value="транзакция {order_id}">    
+				<input type="hidden" name="sum" value="4568.25" data-type="number">    
+				<input type="hidden" name="comment" value="Pay for test">   
+			    <input type="hidden" name="need-fio" value="true">    
+				<input type="hidden" name="need-email" value="true">    
+				<input type="hidden" name="need-phone" value="false">    
+				<input type="hidden" name="need-address" value="false">    
+				<label><input required class="radio-inline" type="radio" name="paymentType" value="PC"> Яндекс.Деньгами</label><br>  
+				<label><input required class="radio-inline" type="radio" name="paymentType" value="AC"> Банковской картой</label>
+				<br><br>
+				<input type="submit" class="btn btn-success btn-form" value="Pay">
+			</form>
+        </div>
+
+      </div>
+      
+    </div>
+  </div>
+    <div class="col-sm-4">
+		
+		<div id="js-flip-1" class="flip">
+		    <div class="card">
+		        <div class="face front" v-on:click="card0"></div>
+		        <div class="face back" v-bind:class="resultBox[0].win">{{resultBox[0].val}}%</div>
+		    </div>
+		</div>
+
+    </div>
+    <div class="col-sm-4">
+
+		<div id="js-flip-2" class="flip">
+		    <div class="card">
+		        <div class="face front" v-on:click="card1"></div>
+		        <div class="face back" v-bind:class="resultBox[1].win">{{resultBox[1].val}}%</div>
+		    </div>
+		</div>
+
+    </div>
+    <div class="col-sm-4">
+     	
+		<div id="js-flip-3" class="flip">
+		    <div class="card">
+		        <div class="face front" v-on:click="card2"></div>
+		        <div class="face back" v-bind:class="resultBox[2].win">{{resultBox[2].val}}%</div>
+		    </div>
+		</div>
+    </div>
+
+     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Place a bet</button>
+     <button type="button" class="btn btn-warning">Free play</button>
+     <hr>
+     <br><p> Copiright 2013-2019 <br>
+	     	bring-Home corp.
+	</p>
+  </div>
+
+
+		<div class="progress" v-bind:style="{ display: hideProgressbar }">
+		    <div class="progress-bar" role="progressbar" aria-valuenow="12" aria-valuemin="0" aria-valuemax="100" 
+		    v-bind:style="{ width: progressbar +'%'}">
+		     
+		    </div>
+		</div>
+
+
+</div>
+<script>
+
+ var socket = io();
+	
+const vue = new Vue({
+	el: '.container',
+	data: {
+	    progressbar: '',
+	    rowDisplay: 'none',
+	    hideProgressbar: '',
+	    resultBox: [{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
+	  },
+	methods: { 
+		card0: function(){
+			this.class0 = resultBox[0].win;
+			console.log(resultBox[0].win + 'oooooooooooo')
+			socket.emit('chat message', resultBox[0].val);
+		},
+		card1: function(){
+			vue.class1 = resultBox[1].win;
+			console.log(this.result[1].win)
+			socket.emit('chat message', resultBox[1].val);
+		},
+		card2: function(){
+			console.log(this.result[2].win)
+			socket.emit('chat message', resultBox[2].val);
+		}
+	  }, 
+	 // created: 
+	})
+
+	
+
+	  	  socket.on('chat message', function(msg){
+	  	  vue.resultBox = msg;
+	  	  	console.log(vue.resultBox[0])
+	  	  	console.log('--------------------------------------')
+    	})  
+	  
+
+
+
+
+
+	function progressbarFun() {
+			var loader;
+			for( loader = 1; loader < 101; loader++ ){
+				setTimeout(function(){
+					vue.progressbar = loader;
+					if (vue.progressbar === 101){
+						//console.log(loader);
+							setTimeout(function(){
+								vue.rowDisplay = 'block';
+								vue.hideProgressbar = 'none';
+							},600 );
+					}
+				},5 );
+			}
+	    }
+	    progressbarFun()
+
+
+$('#js-flip-1').on('click', function(){
+    $('#js-flip-1 .card').toggleClass('flipped');
+
+});
+$('#js-flip-2').on('click', function(){
+    $('#js-flip-2 .card').toggleClass('flipped');
+});
+$('#js-flip-3').on('click', function(){
+    $('#js-flip-3 .card').toggleClass('flipped');
+});
+
+</script>
+</body>
+</html>
