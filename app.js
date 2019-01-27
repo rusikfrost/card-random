@@ -24,8 +24,16 @@ socket.emit('chat message', arr.sort(compareRandom) )
 
 	console.log('a user connected');
   socket.on('chat message', function(msg){
+  	socket.emit('chat message', arr.sort(compareRandom) )
     console.log( msg );
   });
+
+
+ socket.on('result', function(msg){
+  	socket.emit('chat message', arr.sort(compareRandom) )
+    console.log( msg );
+  });
+
 });
 
 http.listen(3000, function(){

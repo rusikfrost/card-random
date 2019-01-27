@@ -7,7 +7,7 @@
 	}
 	.col-sm-4 {
 		margin-top: 20%;
-		text-align: center;
+		text-align: center; 
 	}
 	.btn-lg {
 		position: absolute;
@@ -36,6 +36,7 @@
 		height: 60px;
 		width: 30%;
 		font-size: 22px;
+		position: relative;
 	}
 	.btn-form {
 		margin-left: 40%;
@@ -54,7 +55,7 @@
 	hr {
 		margin-top: 10%;
 	}
-	input {
+	input .radio-inline {
 	  position: absolute;
 	  top: 0;
 	  left: 0;
@@ -79,6 +80,7 @@
     height: 100%;
     -webkit-transform-style: preserve-3d;
     -webkit-transition: 0.5s;
+    user-select: none;   
 }
 .flip .card:hover {
 	box-shadow: 0px 0px 10px 5px #228B22;
@@ -94,6 +96,7 @@
     font-size: 3em;
     text-align: center;
     line-height: 200px;
+    user-select: none;   
 }
 .flip .card .front {
     position: absolute;
@@ -103,6 +106,7 @@
     cursor: pointer;
     border-radius: 8px;
     opacity: 0.6;
+    user-select: none;   
 }
 .flip .card .back {
     -webkit-transform: rotateY(-180deg);
@@ -110,14 +114,24 @@
     border-radius: 8px;
     font-size: 54px;
     opacity: 0.6;
+    user-select: none;   
 }
 .none {
 	color: #B22222;
 	background: #FFE4E1;
 	border: 4px dashed #B22222;
+	user-select: none;   
 }
 .yeah {
 	color: 	#3CB371;
 	background: #F0FFF0;
 	border: 4px dashed #3CB371;
+	user-select: none;   
+}
+.tablo {
+	font-size: 120px;
+	opacity: 0.7;
+	position: fixed;
+	top: 50%;
+	left: 50%;
 }

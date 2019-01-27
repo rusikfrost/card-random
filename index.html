@@ -20,7 +20,7 @@
 
 <div class="container">
   <div class="row" v-bind:style="{ display: rowDisplay }">
- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+ <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">
  	<b class="balance">23 $</b>  Withdraw money</button>
 
   <!-- Modal -->
@@ -31,7 +31,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Place a bet</h4>
         </div>
         <div class="modal-body">
 			<form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">    
@@ -58,6 +58,31 @@
       
     </div>
   </div>
+
+    <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Withdrow money</h4>
+        </div>
+        <div class="modal-body">
+
+        	<label><input required class="radio-inline" type="radio" name="paymentType" value="vm"> VISA/MasterCard </label><br>  
+				<label><input required class="radio-inline" type="radio" name="paymentType" value="wm"> WebMoney </label><br>
+				<input type="text" name="inpPay">
+	
+        </div>
+
+      </div>
+      
+    </div>
+  </div>
+
+<div class="tablo">{{tablo}}</div>
+
     <div class="col-sm-4">
 		
 		<div id="js-flip-1" class="flip">
@@ -89,7 +114,7 @@
     </div>
 
      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Place a bet</button>
-     <button type="button" class="btn btn-warning">Free play</button>
+     <button type="button" class="btn btn-warning" v-on:click="freePlay">Free play</button>
      <hr>
      <br><p> Copiright 2013-2019 <br>
 	     	bring-Home corp.
@@ -117,38 +142,48 @@ const vue = new Vue({
 	    rowDisplay: 'none',
 	    hideProgressbar: '',
 	    resultBox: [{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
+	    tablo: '',
 	  },
 	methods: { 
 		card0: function(){
-			this.class0 = resultBox[0].win;
-			console.log(resultBox[0].win + 'oooooooooooo')
-			socket.emit('chat message', resultBox[0].val);
+			socket.emit('result', this.resultBox[0].val);
+			console.log(this.resultBox[0].win)
+			this.class0 = this.resultBox[0].win;	
+			this.tablo = this.resultBox[0].win;							
+			
+			tablo()
 		},
 		card1: function(){
-			vue.class1 = resultBox[1].win;
-			console.log(this.result[1].win)
-			socket.emit('chat message', resultBox[1].val);
+			socket.emit('result', this.resultBox[1].val);
+			console.log(this.resultBox[1].win)
+			this.class1 = this.resultBox[1].win;
+			this.tablo = this.resultBox[1].win;	
+			
+			tablo()
 		},
 		card2: function(){
-			console.log(this.result[2].win)
-			socket.emit('chat message', resultBox[2].val);
+			socket.emit('result', this.resultBox[2].val);
+			console.log(this.resultBox[2].win)
+			this.class2 = this.resultBox[2].win;
+			this.tablo = this.resultBox[2].win;	
+			
+			tablo()
+		},
+		freePlay: function(){
+			$(' .card').removeClass('flipped');
+
 		}
 	  }, 
-	 // created: 
+	 // created: $(' .card').removeClass('flipped');
 	})
 
 	
 
-	  	  socket.on('chat message', function(msg){
+	  	  socket.on('chat message', function sock(msg){
 	  	  vue.resultBox = msg;
 	  	  	console.log(vue.resultBox[0])
 	  	  	console.log('--------------------------------------')
     	})  
-	  
-
-
-
-
 
 	function progressbarFun() {
 			var loader;
@@ -167,16 +202,22 @@ const vue = new Vue({
 	    }
 	    progressbarFun()
 
+function tablo() {
+	$('.tablo').css({'fontSize':'100px', 'color':'green'})
+}
+
 
 $('#js-flip-1').on('click', function(){
-    $('#js-flip-1 .card').toggleClass('flipped');
-
+    $(' .card').addClass('flipped');
+    	//$('#js-flip-1').css({'width':'290px', 'transition':'0.5s'})
 });
 $('#js-flip-2').on('click', function(){
-    $('#js-flip-2 .card').toggleClass('flipped');
+    $('.card').addClass('flipped');
+        //$('#js-flip-2').css({'border':'6px solid gold', 'borderRadius':'16px', 'transition':'0.5s', 'padding':'6px',})
 });
 $('#js-flip-3').on('click', function(){
-    $('#js-flip-3 .card').toggleClass('flipped');
+    $(' .card').addClass('flipped');
+        //$('#js-flip-3').css({'width':'290px', 'transition':'0.5s'})
 });
 
 </script>
