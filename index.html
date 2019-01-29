@@ -70,9 +70,11 @@
         </div>
         <div class="modal-body">
 
-        	<label><input required class="radio-inline" type="radio" name="paymentType" value="vm"> VISA/MasterCard </label><br>  
-				<label><input required class="radio-inline" type="radio" name="paymentType" value="wm"> WebMoney </label><br>
-				<input type="text" name="inpPay">
+        	<label><input required class="radio-inline" type="radio" name="paymentType" value="vm"> VISA/MasterCard </label>
+        	<br>  
+			<label><input required class="radio-inline" type="radio" name="paymentType" value="wm"> WebMoney </label>
+			<br>
+			<input type="text" name="inpPay">
 	
         </div>
 
@@ -88,7 +90,7 @@
 		<div id="js-flip-1" class="flip">
 		    <div class="card">
 		        <div class="face front" v-on:click="card0"></div>
-		        <div class="face back" v-bind:class="resultBox[0].win">{{resultBox[0].val}}%</div>
+		        <div class="face back" v-bind:class="yeah">{{resultBox[0]}}%</div>
 		    </div>
 		</div>
 
@@ -98,7 +100,7 @@
 		<div id="js-flip-2" class="flip">
 		    <div class="card">
 		        <div class="face front" v-on:click="card1"></div>
-		        <div class="face back" v-bind:class="resultBox[1].win">{{resultBox[1].val}}%</div>
+		        <div class="face back" v-bind:class="yeah">{{resultBox[1]}}%</div>
 		    </div>
 		</div>
 
@@ -108,13 +110,13 @@
 		<div id="js-flip-3" class="flip">
 		    <div class="card">
 		        <div class="face front" v-on:click="card2"></div>
-		        <div class="face back" v-bind:class="resultBox[2].win">{{resultBox[2].val}}%</div>
+		        <div class="face back" v-bind:class="yeah">{{resultBox[2]}}%</div>
 		    </div>
 		</div>
     </div>
 
      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Place a bet</button>
-     <button type="button" class="btn btn-warning" v-on:click="freePlay">Free play</button>
+     <!--<button type="button" class="btn btn-warning" v-on:click="freePlay">Free play</button>-->
      <hr>
      <br><p> Copiright 2013-2019 <br>
 	     	bring-Home corp.
@@ -141,49 +143,82 @@ const vue = new Vue({
 	    progressbar: '',
 	    rowDisplay: 'none',
 	    hideProgressbar: '',
-	    resultBox: [{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
+	    resultBox: true,//[{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
 	    tablo: '',
-	  },
+	    yeah: true,
+	},
 	methods: { 
 		card0: function(){
-			socket.emit('result', this.resultBox[0].val);
-			console.log(this.resultBox[0].win)
-			this.class0 = this.resultBox[0].win;	
-			this.tablo = this.resultBox[0].win;							
+
+			socket.emit('result', 'click');
+			socket.on('chat message', function sock(msg){
+			  	this.resultBox = msg;
+			  	//console.log(this.resultBox)
+		   
+		    if (msg == true){
+		    	this.class0 = this.resultBox[0].win;	
+				this.tablo = this.resultBox[0].win;	
+		    }
+
+		     }); 
+			$(' .card').addClass('flipped');						
 			
-			tablo()
+			tablo(0)
 		},
 		card1: function(){
-			socket.emit('result', this.resultBox[1].val);
-			console.log(this.resultBox[1].win)
-			this.class1 = this.resultBox[1].win;
-			this.tablo = this.resultBox[1].win;	
+			socket.emit('result', 'click');
+			socket.on('chat message', function sock(msg){
+			  	this.resultBox = msg;
+			  	//console.log(this.resultBox)
+		   
+		    if (msg == true){
+		    	this.class0 = this.resultBox[1].win;	
+				this.tablo = this.resultBox[1].win;	
+		    }
+
+		     }); 
+			$(' .card').addClass('flipped');						
 			
-			tablo()
+			
+			tablo(1)
 		},
 		card2: function(){
-			socket.emit('result', this.resultBox[2].val);
-			console.log(this.resultBox[2].win)
-			this.class2 = this.resultBox[2].win;
-			this.tablo = this.resultBox[2].win;	
+			socket.emit('result', 'click');
+			socket.on('chat message', function sock(msg){
+			  	this.resultBox = msg;
+			  	//console.log(this.resultBox)
+		   
+		    if (msg == true){
+		    	this.class0 = this.resultBox[2].win;	
+				this.tablo = this.resultBox[2].win;	
+		    }
+
+		     }); 
+			$(' .card').addClass('flipped');						
 			
-			tablo()
+			
+			tablo(2)
 		},
 		freePlay: function(){
-			$(' .card').removeClass('flipped');
 
 		}
-	  }, 
-	 // created: $(' .card').removeClass('flipped');
-	})
+	}, 
+})
 
-	
+	socket.on('chat message', function sock(msg){
+	  	vue.resultBox = msg;
+	  	console.log(vue.resultBox)
+    })  
 
-	  	  socket.on('chat message', function sock(msg){
-	  	  vue.resultBox = msg;
-	  	  	console.log(vue.resultBox[0])
-	  	  	console.log('--------------------------------------')
-    	})  
+	function tablo(a) {
+		$('.tablo').css({'fontSize':'100px', 'color':'green'})
+		setTimeout(function(){
+			$(' .card').removeClass('flipped');
+				setTimeout(function(){
+					//socket.emit('result', vue.resultBox[a].val);
+				},200)
+		},1500)
+	}
 
 	function progressbarFun() {
 			var loader;
@@ -192,33 +227,15 @@ const vue = new Vue({
 					vue.progressbar = loader;
 					if (vue.progressbar === 101){
 						//console.log(loader);
-							setTimeout(function(){
-								vue.rowDisplay = 'block';
-								vue.hideProgressbar = 'none';
-							},600 );
+						setTimeout(function(){
+							vue.rowDisplay = 'block';
+							vue.hideProgressbar = 'none';
+						},600 );
 					}
-				},5 );
-			}
-	    }
-	    progressbarFun()
-
-function tablo() {
-	$('.tablo').css({'fontSize':'100px', 'color':'green'})
-}
-
-
-$('#js-flip-1').on('click', function(){
-    $(' .card').addClass('flipped');
-    	//$('#js-flip-1').css({'width':'290px', 'transition':'0.5s'})
-});
-$('#js-flip-2').on('click', function(){
-    $('.card').addClass('flipped');
-        //$('#js-flip-2').css({'border':'6px solid gold', 'borderRadius':'16px', 'transition':'0.5s', 'padding':'6px',})
-});
-$('#js-flip-3').on('click', function(){
-    $(' .card').addClass('flipped');
-        //$('#js-flip-3').css({'width':'290px', 'transition':'0.5s'})
-});
+			},5 );
+		}
+	}
+	progressbarFun()
 
 </script>
 </body>

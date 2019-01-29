@@ -9,52 +9,40 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-
 io.on('connection', function(socket){
 
-const arr = [{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }];
+/*
 function compareRandom(a, b) {
-  return Math.random() - 0.5;
+	return Math.random() - 0.5;
 }
-arr.sort(compareRandom);
-console.log( arr.sort(compareRandom) );
 
-socket.emit('chat message', arr.sort(compareRandom) )
+var randArr = arr[Math.floor(Math.random()*arr.length)];
+var randRandArr = randArr[Math.floor(Math.random()*randArr.length)];
+var randRandRandArr = randRandArr[Math.floor(Math.random()*randRandArr.length)];
+//arr.sort(compareRandom);
+//console.log( randRandRandArr );
 
+socket.emit('chat message',  arr.sort() )
+console.log('a user connected');
 
-	console.log('a user connected');
   socket.on('chat message', function(msg){
-  	socket.emit('chat message', arr.sort(compareRandom) )
+
     console.log( msg );
   });
-
 
  socket.on('result', function(msg){
-  	socket.emit('chat message', arr.sort(compareRandom) )
+
+  	socket.emit('chat message',  arr.sort() )
     console.log( msg );
   });
-
 });
+*/
+
+
+Math.floor(Math.random() * 3);
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
 
 
-
-
-
-
-
-
-
-const arr = [{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }];
-
-
-function compareRandom(a, b) {
-  return Math.random() - 0.5;
-}
-
-arr.sort(compareRandom);
-
-console.log( arr.sort(compareRandom) );

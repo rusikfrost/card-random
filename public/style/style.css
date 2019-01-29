@@ -135,3 +135,9 @@
 	top: 50%;
 	left: 50%;
 }
+
+@media screen and (max-width: 824px) {
+	.card {
+
+	}
+}
