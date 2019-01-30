@@ -1,3 +1,11 @@
+body {
+	font-family: 'Acme', sans-serif;
+}
+h1 {
+	font-family: 'Shadows Into Light', cursive;
+	margin-right: 18%;
+}
+
 .jumbotron {
 		height: 900px;
 		position: absolute;
@@ -92,10 +100,10 @@
     position: absolute;
     -webkit-backface-visibility: hidden;
     z-index: 2;
-    font-family: Georgia;
-    font-size: 3em;
+    font-family: 'Indie Flower', cursive;
+    font-size: 2.6em;
     text-align: center;
-    line-height: 200px;
+    padding: 25px;
     user-select: none;   
 }
 .flip .card .front {

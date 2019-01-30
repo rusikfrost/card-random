@@ -9,7 +9,57 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 io.on('connection', function(socket){
+	socket.on('click', function(msg){
+		var x = getRndInteger(0,3)
+		if ( msg === x ) {
+			console.log('yeah');
+			socket.emit('result', true )
+		} else {
+			console.log('nono');
+			socket.emit('result', false )
+		}
+
+
+	  	//socket.emit('result', x )
+	  
+
+  	});
+
+
+
+//console.log( );
+
+
+});
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
+
+/*
+var arr = [true, false, false];
+
+function compareRandom(a, b) {
+  return Math.random() - 0.5;
+}
+
+arr.sort(compareRandom);
+*/
+
+
+
+
+
+
+
+
+
+
 
 /*
 function compareRandom(a, b) {
@@ -35,14 +85,5 @@ console.log('a user connected');
   	socket.emit('chat message',  arr.sort() )
     console.log( msg );
   });
-});
+
 */
-
-
-Math.floor(Math.random() * 3);
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
-});
-
-

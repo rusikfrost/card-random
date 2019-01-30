@@ -3,6 +3,9 @@
 <head>
 	<title></title>
 	<!-- Latest compiled and minified CSS -->
+
+<link href="https://fonts.googleapis.com/css?family=Acme|Indie+Flower|Shadows+Into+Light" rel="stylesheet">
+	
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -88,9 +91,9 @@
     <div class="col-sm-4">
 		
 		<div id="js-flip-1" class="flip">
-		    <div class="card">
+		    <div class="card" v-bind:class="{flipped:flippedCard0}">
 		        <div class="face front" v-on:click="card0"></div>
-		        <div class="face back" v-bind:class="yeah">{{resultBox[0]}}%</div>
+		        <div class="face back none" v-bind:class="{ yeah: trueClass }">{{resultBox}}</div>
 		    </div>
 		</div>
 
@@ -98,9 +101,9 @@
     <div class="col-sm-4">
 
 		<div id="js-flip-2" class="flip">
-		    <div class="card">
+		    <div class="card" v-bind:class="{flipped:flippedCard1}">
 		        <div class="face front" v-on:click="card1"></div>
-		        <div class="face back" v-bind:class="yeah">{{resultBox[1]}}%</div>
+		        <div class="face back none" v-bind:class="{ yeah: trueClass }">{{resultBox}}</div>
 		    </div>
 		</div>
 
@@ -108,15 +111,15 @@
     <div class="col-sm-4">
      	
 		<div id="js-flip-3" class="flip">
-		    <div class="card">
+		    <div class="card" v-bind:class="{flipped:flippedCard2}">
 		        <div class="face front" v-on:click="card2"></div>
-		        <div class="face back" v-bind:class="yeah">{{resultBox[2]}}%</div>
+		        <div class="face back none" v-bind:class="{ yeah: trueClass }">{{resultBox}}</div>
 		    </div>
 		</div>
     </div>
 
      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Place a bet</button>
-     <!--<button type="button" class="btn btn-warning" v-on:click="freePlay">Free play</button>-->
+     <button type="button" class="btn btn-warning" v-on:click="freePlay">Free play</button>
      <hr>
      <br><p> Copiright 2013-2019 <br>
 	     	bring-Home corp.
@@ -143,74 +146,95 @@ const vue = new Vue({
 	    progressbar: '',
 	    rowDisplay: 'none',
 	    hideProgressbar: '',
-	    resultBox: true,//[{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
+
+	    resultBox: '',//[{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
 	    tablo: '',
-	    yeah: true,
+	    flippedCard0: false,
+	    flippedCard1: false,
+	    flippedCard2: false,
+
+	    trueClass: false,
 	},
 	methods: { 
 		card0: function(){
-
-			socket.emit('result', 'click');
-			socket.on('chat message', function sock(msg){
-			  	this.resultBox = msg;
-			  	//console.log(this.resultBox)
-		   
-		    if (msg == true){
-		    	this.class0 = this.resultBox[0].win;	
-				this.tablo = this.resultBox[0].win;	
-		    }
-
-		     }); 
-			$(' .card').addClass('flipped');						
 			
-			tablo(0)
+				if ( this.flippedCard1 || this.flippedCard2 ) {
+					console.log('fuck u!')
+				} else {
+					this.flippedCard0 = true;
+					
+					socket.emit('click', 0);
+				}	
+			aa(0)
+
 		},
 		card1: function(){
-			socket.emit('result', 'click');
-			socket.on('chat message', function sock(msg){
-			  	this.resultBox = msg;
-			  	//console.log(this.resultBox)
-		   
-		    if (msg == true){
-		    	this.class0 = this.resultBox[1].win;	
-				this.tablo = this.resultBox[1].win;	
-		    }
+			
+				if ( this.flippedCard0 || this.flippedCard2 ) {
+					console.log('fuck u!')
+				} else {
+					this.flippedCard1 = true;
+					//this.trueClass = true;
+					socket.emit('click', 1);
+				}
 
-		     }); 
-			$(' .card').addClass('flipped');						
-			
-			
-			tablo(1)
+			aa(1)
+
 		},
 		card2: function(){
-			socket.emit('result', 'click');
-			socket.on('chat message', function sock(msg){
-			  	this.resultBox = msg;
-			  	//console.log(this.resultBox)
-		   
-		    if (msg == true){
-		    	this.class0 = this.resultBox[2].win;	
-				this.tablo = this.resultBox[2].win;	
-		    }
+			
+				if ( this.flippedCard0 || this.flippedCard1 ) {
+					console.log('fuck u!')
+				} else {
+					this.flippedCard2 = true;
+					//this.trueClass = true;
+					socket.emit('click', 2);
+				}
 
-		     }); 
-			$(' .card').addClass('flipped');						
-			
-			
-			tablo(2)
+			aa(2)
+
 		},
 		freePlay: function(){
+			this.flippedCard0 = false;
+			this.flippedCard1 = false;
+			this.flippedCard2 = false;
+			setTimeout(function(){
+				this.trueClass = false;
+			},300 );
 
+
+			//$(' .card').removeClass('flipped');
+			//console.log( this_click + ' is clicked')
 		}
 	}, 
 })
 
-	socket.on('chat message', function sock(msg){
-	  	vue.resultBox = msg;
-	  	console.log(vue.resultBox)
-    })  
+function aa(i){
+	socket.on('result', function sock(msg){
 
-	function tablo(a) {
+		if ( msg == true ){
+			console.log( true )
+			vue.trueClass = true;
+			vue.resultBox = 'You WIN!  +33%'
+		} else {
+			console.log( false )
+			vue.resultBox = 'You LOST!  -25%'
+			vue.trueClass = false;
+
+		}
+		
+	})
+
+}
+
+
+
+	/*socket.on('chat message', function sock(msg){
+	  	vue.resultBox = msg;
+	  	//console.log(vue.resultBox)
+    }) */ 
+
+	/*function tablo(a) {
 		$('.tablo').css({'fontSize':'100px', 'color':'green'})
 		setTimeout(function(){
 			$(' .card').removeClass('flipped');
@@ -218,7 +242,7 @@ const vue = new Vue({
 					//socket.emit('result', vue.resultBox[a].val);
 				},200)
 		},1500)
-	}
+	}*/
 
 	function progressbarFun() {
 			var loader;
@@ -236,6 +260,25 @@ const vue = new Vue({
 		}
 	}
 	progressbarFun()
+
+
+	/*
+
+			socket.emit('result', 'click');
+			socket.on('chat message', function sock(msg){
+			  	this.resultBox = msg;
+			  	//console.log(this.resultBox)
+		   
+		    if (msg == true){
+		    	this.class0 = this.resultBox[0].win;	
+				this.tablo = this.resultBox[0].win;	
+		    }
+
+		     }); 
+			$(' .card').addClass('flipped');						
+			
+			tablo(0)
+			*/
 
 </script>
 </body>
