@@ -37,24 +37,16 @@
           <h4 class="modal-title">Place a bet</h4>
         </div>
         <div class="modal-body">
-			<form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">    
-				<input type="hidden" name="receiver" value="410014146569625">   
-				<input type="hidden" name="formcomment" value="Pay for test">
-				<input type="hidden" name="short-dest" value="Pay for test">  
-				<input type="hidden" name="label" value="$order_id">    
-				<input type="hidden" name="quickpay-form" value="donate">    
-				<input type="hidden" name="targets" value="транзакция {order_id}">    
-				<input type="hidden" name="sum" value="4568.25" data-type="number">    
-				<input type="hidden" name="comment" value="Pay for test">   
-			    <input type="hidden" name="need-fio" value="true">    
-				<input type="hidden" name="need-email" value="true">    
-				<input type="hidden" name="need-phone" value="false">    
-				<input type="hidden" name="need-address" value="false">    
-				<label><input required class="radio-inline" type="radio" name="paymentType" value="PC"> Яндекс.Деньгами</label><br>  
-				<label><input required class="radio-inline" type="radio" name="paymentType" value="AC"> Банковской картой</label>
-				<br><br>
-				<input type="submit" class="btn btn-success btn-form" value="Pay">
-			</form>
+
+
+			<div>
+
+    <a class="btn btn-lg btn-primary" target="_blank" href="https://api.fondy.eu/s/w6NZM0A5iX">
+        <i class="fa fa-lock"></i> Оплатить 3 EUR
+    </a>
+
+
+</div>
         </div>
 
       </div>
@@ -147,7 +139,7 @@ const vue = new Vue({
 	    rowDisplay: 'none',
 	    hideProgressbar: '',
 
-	    resultBox: '',//[{val: '-25', win: 'none' }, {val: '+33', win: 'yeah' }, {val: '-25', win: 'none' }],
+	    resultBox: '',
 	    tablo: '',
 	    flippedCard0: false,
 	    flippedCard1: false,
@@ -161,8 +153,7 @@ const vue = new Vue({
 				if ( this.flippedCard1 || this.flippedCard2 ) {
 					console.log('fuck u!')
 				} else {
-					this.flippedCard0 = true;
-					
+					this.flippedCard0 = true;	
 					socket.emit('click', 0);
 				}	
 			aa(0)
@@ -174,7 +165,6 @@ const vue = new Vue({
 					console.log('fuck u!')
 				} else {
 					this.flippedCard1 = true;
-					//this.trueClass = true;
 					socket.emit('click', 1);
 				}
 
@@ -187,7 +177,6 @@ const vue = new Vue({
 					console.log('fuck u!')
 				} else {
 					this.flippedCard2 = true;
-					//this.trueClass = true;
 					socket.emit('click', 2);
 				}
 
@@ -201,10 +190,6 @@ const vue = new Vue({
 			setTimeout(function(){
 				this.trueClass = false;
 			},300 );
-
-
-			//$(' .card').removeClass('flipped');
-			//console.log( this_click + ' is clicked')
 		}
 	}, 
 })
@@ -226,24 +211,6 @@ function aa(i){
 	})
 
 }
-
-
-
-	/*socket.on('chat message', function sock(msg){
-	  	vue.resultBox = msg;
-	  	//console.log(vue.resultBox)
-    }) */ 
-
-	/*function tablo(a) {
-		$('.tablo').css({'fontSize':'100px', 'color':'green'})
-		setTimeout(function(){
-			$(' .card').removeClass('flipped');
-				setTimeout(function(){
-					//socket.emit('result', vue.resultBox[a].val);
-				},200)
-		},1500)
-	}*/
-
 	function progressbarFun() {
 			var loader;
 			for( loader = 1; loader < 101; loader++ ){
@@ -261,24 +228,9 @@ function aa(i){
 	}
 	progressbarFun()
 
-
-	/*
-
-			socket.emit('result', 'click');
-			socket.on('chat message', function sock(msg){
-			  	this.resultBox = msg;
-			  	//console.log(this.resultBox)
-		   
-		    if (msg == true){
-		    	this.class0 = this.resultBox[0].win;	
-				this.tablo = this.resultBox[0].win;	
-		    }
-
-		     }); 
-			$(' .card').addClass('flipped');						
-			
-			tablo(0)
-			*/
+	$.getJSON('http://ipinfo.io', function(data){
+    console.log(data.ip);
+});
 
 </script>
 </body>
